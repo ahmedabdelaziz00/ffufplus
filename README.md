@@ -19,9 +19,9 @@
 
 1. **Clone the Repository:**
    
-   ```bash  
-   git clone https://github.com/ahmedabdelaziz00/ffufplus.git@latest
-
+```bash  
+git clone https://github.com/ahmedabdelaziz00/ffufplus.git@latest
+```
  ## usage
 Basic Syntax
 ```

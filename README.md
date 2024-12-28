@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Features
+##  Features
 
 - Automates FFUF executions for various URL patterns:
   - `/FUZZ`, `//FUZZ`, `/.FUZZ`, `/_FUZZ`, `///FUZZ`, and more!
@@ -15,9 +15,54 @@
 
 ---
 
-## 📥 Installation
+##  Installation
 
 1. **Clone the Repository:**
-   ```bash
    
+   ```bash  
    git clone https://github.com/yourusername/FFUFPlus.git
+
+ ## usage
+Basic Syntax
+```
+python ffufPlus.py -d <domain> -w <wordlist>
+```
+
+
+## Optional Parameters 
+
+- (`-fl`)Filter by the number of response lines.	-fl 10
+- (`-X`)	HTTP method (GET, POST, etc.). Default is GET.
+
+## Examples
+
+```
+python ffufPlus.py -d example.com -w wordlist.txt
+
+python ffufPlus.py -d example.com -w wordlist.txt -fl 15 -X POST
+
+```
+
+## How It Works
+
+**FFUFPlus** generates and executes **FFUF** commands for a range of URL patterns. It uses the following predefined patterns:
+- `https://<domain>/FUZZ`
+- `https://<domain>//FUZZ`
+- `https://<domain>/.FUZZ`
+- `https://<domain>/_FUZZ`
+- `https://<domain>//.FUZZ`
+- `...and more!`
+
+## Example Output
+
+```
+===============================
+Running Command:
+ffuf -u https://example.com/FUZZ -w wordlist.txt -X GET
+===============================
+
+===============================
+Running Command:
+ffuf -u https://example.com//FUZZ -w wordlist.txt -X GET
+===============================
+```

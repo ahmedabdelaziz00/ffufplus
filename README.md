@@ -1,6 +1,6 @@
 # FFUFPlus
 
-**FFUFPlus** is an enhanced automation tool built to simplify and extend the functionality of [FFUF](https://github.com/ffuf/ffuf). It automates multiple directory fuzzing patterns, making it a powerful and efficient tool for penetration testers and security researchers.
+**FFUFPlus** is an enhanced automation script built to simplify and extend the functionality of [FFUF](https://github.com/ffuf/ffuf). It automates multiple directory fuzzing patterns, making it a powerful and efficient script for penetration testers and security researchers.
 
 ---
 

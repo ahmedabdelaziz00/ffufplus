@@ -20,7 +20,7 @@
 1. **Clone the Repository:**
    
    ```bash  
-   [git clone https://github.com/yourusername/FFUFPlus.git](https://github.com/ahmedabdelaziz00/ffufplus.git)
+   git clone https://github.com/ahmedabdelaziz00/ffufplus.git@latest
 
  ## usage
 Basic Syntax

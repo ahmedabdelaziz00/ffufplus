@@ -1,7 +1,12 @@
 import subprocess
 import argparse
+import logging
 
-def run_ffuf(domain_name, wordlist_path, filter_line, method):
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+def run_ffuf(domain_name, wordlist_path, filter_line, method, extensions, timeout):
     # List of ffuf URL patterns
     patterns = [
         "https://{}/FUZZ",
@@ -18,8 +23,8 @@ def run_ffuf(domain_name, wordlist_path, filter_line, method):
         "https://{}/./FUZZ",
         "https://{}/FUZZ%09",
         "https://{}/FUZZ%20",
-        "https://{}/cgi-bin/FUZZ.cgi",#?FUZZ=%26\id%26" => rce if 200
-        "https://{}/%2\e/FUZZ",
+        "https://{}/cgi-bin/FUZZ.cgi",  #    ?FUZZ=%26id%26 => rce here
+        "https://{}/%2e/FUZZ",
         "https://{}/;FUZZ",
         "https://{}/FUZZ/.",
         "https://{}//FUZZ//",
@@ -32,7 +37,9 @@ def run_ffuf(domain_name, wordlist_path, filter_line, method):
         command = [
             "ffuf", 
             "-u", url, 
-            "-w", wordlist_path
+            "-w", wordlist_path,
+            "-t", "75",
+            "-e", extensions
         ]
 
         if filter_line is not None:
@@ -42,13 +49,17 @@ def run_ffuf(domain_name, wordlist_path, filter_line, method):
             command.extend(["-X", method])
 
         try:
-            print("\n===============================")
-            print(f"Running Command:")
-            print(f"{' '.join(command)}")
-            print("===============================\n")
-            subprocess.run(command, check=True)
+            logger.info(f"Running Command: {' '.join(command)}")
+            subprocess.run(command, check=True, timeout=timeout)
         except subprocess.CalledProcessError as e:
-            print(f"\n[ERROR] Failed to execute command:\n{e}\n")
+            logger.error(f"[ERROR] Command failed: {e}")
+        except subprocess.TimeoutExpired:
+            logger.error(f"[ERROR] Command timed out: {url}")
+
+    # Repeat with POST method if no specific method was provided
+    if method == "GET":
+        logger.info("Repeating with POST method.")
+        run_ffuf(domain_name, wordlist_path, filter_line, "POST", extensions, timeout)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -60,7 +71,9 @@ if __name__ == "__main__":
     parser.add_argument("-w", "--wordlist", required=True, help="Path to the wordlist")
     parser.add_argument("-fl", "--filterline", type=int, help="Filter line number (optional)")
     parser.add_argument("-X", "--method", default="GET", help="HTTP request method (default: GET)")
+    parser.add_argument("-e", "--extensions", default=".php,.json,.asp,.aspx,.jsp,.bak,.old", help="Comma-separated list of extensions to fuzz (default: common extensions)")
+    parser.add_argument("--timeout", type=int, default=60, help="Timeout in seconds for each ffuf command (default: 60)")
 
     args = parser.parse_args()
 
-    run_ffuf(args.domain, args.wordlist, args.filterline, args.method)
+    run_ffuf(args.domain, args.wordlist, args.filterline, args.method, args.extensions, args.timeout)

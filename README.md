@@ -4,6 +4,34 @@
 
 ---
 
+## Update
+
+  1. **Improved Logging:**
+
+     - Added logging for better control and visibility of script execution.
+     - Logs include information about commands being executed and any errors encountered.
+  
+  2. **Default Extensions:**
+  
+     - Introduced a (`-e`) argument for specifying file extensions.
+     - Default extensions set to .php,.json,.asp,.aspx,.jsp,.bak,.old.
+     - Users can customize or add more extensions via the -e option.
+  
+  3. **Timeout Support:**
+  
+     - Added a (`--timeout`) argument to specify the maximum execution time for each ffuf command (default: 60 seconds).
+  
+  4. **Fallback to POST Method:**
+  
+     - If the user does not specify a request method (-X), the script defaults to GET and then repeats the execution using the POST method.
+  
+  5. **Other Enhancements:**
+  
+     - Improved code structure for readability and maintainability.
+     - Updated help messages to reflect new features.
+
+---
+
 ##  Features
 
 - Automates FFUF executions for various URL patterns:

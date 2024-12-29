@@ -13,8 +13,18 @@ def run_ffuf(domain_name, wordlist_path, filter_line, method):
         "https://{}///FUZZ",
         "https://{}/;/FUZZ",
         "https://{}/.;/FUZZ",
+        "https://{}/..;/FUZZ",
         "https://{}//.FUZZ",
         "https://{}/./FUZZ",
+        "https://{}/FUZZ%09",
+        "https://{}/FUZZ%20",
+        "https://{}/cgi-bin/FUZZ.cgi",#?FUZZ=%26\id%26" => rce if 200
+        "https://{}/%2\e/FUZZ",
+        "https://{}/;FUZZ",
+        "https://{}/FUZZ/.",
+        "https://{}//FUZZ//",
+        "https://{}/./FUZZ/./",
+        "https://{}/FUZZ..;/"
     ]
 
     for pattern in patterns:
